@@ -85,7 +85,7 @@ folder_path = Path(sys.argv[1])
 
 
 # Создаю папку для отсортированных файлов
-sorted_folder_path = Path('./6_module/sorted')
+sorted_folder_path = Path('/6_module/sorted')
 sorted_folder_path.mkdir(exist_ok=True, parents=True)
 
 
