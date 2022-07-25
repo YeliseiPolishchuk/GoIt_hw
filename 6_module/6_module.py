@@ -133,7 +133,7 @@ def normalize(file: Path) -> None:
     parent_dir = file.parent  # корень файла
     old_name = file.name  # старое имя файла
     new_name = old_name.translate(trans_map).replace(
-        ' ', '')  # новое имя файла
+        ' ', '_')  # новое имя файла
     # переименовую (корень  файла/имя файла -> корень файла/новое имя файла
     os.rename(parent_dir / old_name, parent_dir / new_name)
 
