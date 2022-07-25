@@ -80,8 +80,8 @@ doc_ext = ['.doc', '.docx', '.txt', '.pdf', '.xlsx', '.pptx']
 mus_ext = ['.mp3', '.ogg', '.wav', '.amr']
 arch_ext = ['.zip', '.gz', '.tar']
 
-# folder_path = Path(sys.argv[1])
-folder_path = Path('to_sort')
+folder_path = Path(sys.argv[1])
+# folder_path = Path('to_sort')
 
 
 sorted_folder_path = Path('./6_module/sorted')  # Создаю папку для отсортированных файлов
@@ -101,12 +101,12 @@ def copy_file(file: Path) -> None:
     '''Функция, которая копирует файл, изменяет имя и отправляет в отсортированную папку'''
     ext = file.suffix  # расширение файла
     if ext in photo_ext:
+        # print(file.parent)
+        # print(file.name)
         new_path = sorted_folder_path/'photos'  # Создаю путь к новой папке
         new_path.mkdir(exist_ok=True)  # Создаю папку
-        # old_name = file.name
-        # new_name = old_name.translate(trans_map).replace(' ', '')
-        # os.rename(old_name, new_name)
         copyfile(file, new_path/file.name)  # Копирую файл и переношу в новую папку
+        # normalize(file)
     elif ext in vid_ext:
         new_path = sorted_folder_path/'videos'
         new_path.mkdir(exist_ok=True)
@@ -129,4 +129,21 @@ def copy_file(file: Path) -> None:
         copyfile(file, new_path/file.name)
 
 
+def normalize(file: Path) -> None:
+    '''Функция изменяет имя файла на допустимое(убирает пробелы и кириллицу)'''
+    parent_dir = file.parent  # корень файла
+    old_name = file.name  # старое имя файла
+    new_name = old_name.translate(trans_map).replace(' ', '')  # новое имя файла
+    os.rename(parent_dir/old_name, parent_dir/new_name)  # переименовую (корень  файла/имя файла -> корень файла/новое имя файла
+
+
+def rename_file(path: Path) -> None:
+    for elem in path.iterdir():
+        if elem.is_dir():
+            rename_file(elem)
+        else:
+            normalize(elem)
+
+
 read_folder(folder_path)
+rename_file(sorted_folder_path)
